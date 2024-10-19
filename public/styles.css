@@ -1,0 +1,72 @@
+/* Set up basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace; /* Retro font */
+    background-color: #2b2b2b; /* Dark retro background */
+    color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Center chatbox */
+.chatbox {
+    background-color: #444;
+    padding: 30px;
+    border: 4px solid #f0f0f0;
+    box-shadow: 5px 5px 0px #ff4c00; /* Retro box shadow */
+    width: 400px;
+    text-align: center;
+}
+
+/* Style for the title */
+.chatbox h1 {
+    color: #ffb900;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Style the input and button */
+form input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    border: 2px solid #ffb900;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+}
+
+form button {
+    padding: 10px 20px;
+    border: 2px solid #ffb900;
+    background-color: #ffb900;
+    color: #2b2b2b;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+form button:hover {
+    background-color: #ff4c00; /* Hover color */
+}
+
+/* Chat log styling */
+.chat-log {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.chat-log p {
+    margin-bottom: 10px;
+}
+
+.chat-log strong {
+    color: #ffb900;
+}

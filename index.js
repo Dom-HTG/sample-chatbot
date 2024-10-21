@@ -7,7 +7,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Variables.
 const API_KEY = process.env.API_KEY;
-const PORT = 4267;
+const PORT = process.env.PORT || 3000;
 
 // Create new API Client
 const client = new GoogleGenerativeAI(API_KEY);
@@ -40,7 +40,7 @@ app.post('/generate-text', async (req, res) => {
 
     try {
         const response = await model.generateContent(prompt);
-        res.render('index', { userPrompt: prompt, aiReply: response.candidate.content.parts.text});
+        res.render('index', { userPrompt: prompt, aiReply: response.candidate.content.parts.text}); //re-render the page content with response data.
 
         return res.status(200).json({ reply: response });
 

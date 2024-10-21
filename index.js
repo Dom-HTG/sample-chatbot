@@ -1,9 +1,11 @@
 const express = require('express');
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const path = require('path');
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
+// Variables.
 const API_KEY = process.env.API_KEY;
 const PORT = 4267;
 
@@ -13,18 +15,22 @@ const model = client.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 const app = express();
 
+// Configure view engine.
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); //ejs to render html templates
 
 //middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('public')); //serve static files from the public folder.
+app.use(express.static(path.join(__dirname, 'public'))); //serve static files from the public folder.
 
 
+// Home route. 
 app.get('/', (_, res) => {
     res.render('index', { userPrompt: null, aiReply: null });
 })
 
+// Query route.
 app.post('/generate-text', async (req, res) => {
     const prompt = req.body.prompt;
 

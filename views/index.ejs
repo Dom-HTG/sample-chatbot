@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TONY DUCKSWORTH</title>
+    <title>Bard</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="chatbox">
-        <h1>BUDDY</h1>
+        <h1>Bard.</h1>
 
         <form action="/generate-text" method="POST">
             <input type="text" name="prompt" placeholder="Type your message..." required>
             <button type="submit">Send</button>
         </form>
 
-        <% if (userPrompt) { %>
-            <div class="chat-log">
-                <p><strong>You:</strong> <%= userPrompt %></p>
-                <p><strong>AI:</strong> <%= aiReply %></p>
-            </div>
-        <% } %>
+        <div class="chat-log">
+            <% if (conversation && conversation.length > 0) { %>
+                <% conversation.forEach(function(chat) { %>
+                    <p><strong>You:</strong> <%= chat.user %></p>
+                    <p><strong>AI:</strong> <%= chat.ai %></p>
+                <% }); %>
+            <% } %>
+        </div>
     </div>
 </body>
 </html>
+

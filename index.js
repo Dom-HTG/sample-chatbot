@@ -1,13 +1,16 @@
 const express = require('express');
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const path = require('path');
 
+// LLM Client.
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Variables.
 const API_KEY = process.env.API_KEY;
 const PORT = process.env.PORT || 3000;
+const SESSION_KEY = process.env.SESSION_KEY;
 
 // Create new API Client
 const client = new GoogleGenerativeAI(API_KEY);
@@ -19,15 +22,28 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); //ejs to render html templates
 
-//middlewares
+// Middlewares
+// Configure session middleware
+app.use(session({
+    secret: SESSION_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } 
+}));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'))); //serve static files from the public folder.
 
 
 // Home route. 
-app.get('/', (_, res) => {
-    res.render('index', { userPrompt: null, aiReply: null });
+app.get('/', (req, res) => {
+    // Initialize conversation history if not present
+    if (!req.session.conversation) {
+        req.session.conversation = [];
+    }
+    
+    res.render('index', { conversation: req.session.conversation }); //render the page content with conversation history.
 })
 
 // Query route.
@@ -46,8 +62,12 @@ app.post('/generate-text', async (req, res) => {
 
         const generatedText = await response.response.text();
 
-        console.log(generatedText);
-        res.render('index', { userPrompt: prompt, aiReply: generatedText}); //re-render the page content with response data.
+        req.session.conversation.push({
+            user: prompt,
+            ai: generatedText
+        });
+
+        res.render('index', { conversation: req.session.conversation}); //re-render the page content with response data.
 
         // return res.status(200).json({ reply: response });
 

@@ -38,8 +38,8 @@ app.use(express.static(path.join(__dirname, 'public'))); //serve static files fr
 
 // Home route. 
 app.get('/', (req, res) => {
-    // Initialize conversation history if not present
-    if (!req.session.conversation) {
+    // Initialize new conversation history whether or not it exists.(reload effect)
+    if (!req.session.conversation || req.session.conversation) {
         req.session.conversation = [];
     }
     
@@ -74,7 +74,7 @@ app.post('/generate-text', async (req, res) => {
     } catch (e) {
         console.error(e.message);
 
-        return res.status(500).json({errorStatus: 'Internal Server Error', e: e.message});
+        return res.status(500).json({errorStatus: 'Internal Server Error'});
     }
 })
 

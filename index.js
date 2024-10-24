@@ -40,9 +40,16 @@ app.post('/generate-text', async (req, res) => {
 
     try {
         const response = await model.generateContent(prompt);
-        res.render('index', { userPrompt: prompt, aiReply: response.candidate.content.parts.text}); //re-render the page content with response data.
 
-        return res.status(200).json({ reply: response });
+        // Google generative AI could return responses where certain parts of the response object are callable funtions.
+        // And not plain text, Hence these functions should be called and awaited.
+
+        const generatedText = await response.response.text();
+
+        console.log(generatedText);
+        res.render('index', { userPrompt: prompt, aiReply: generatedText}); //re-render the page content with response data.
+
+        // return res.status(200).json({ reply: response });
 
     } catch (e) {
         console.error(e.message);
